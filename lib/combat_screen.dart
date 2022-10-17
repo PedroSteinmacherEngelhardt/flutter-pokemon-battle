@@ -1,10 +1,11 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/widgets/enemy_stats_bat.dart';
 
+// ignore: must_be_immutable
 class CombatScreen extends StatefulWidget {
-  const CombatScreen({super.key});
+  CombatScreen({super.key, required this.pokemon1, required this.pokemon2});
+  var pokemon1 = {};
+  var pokemon2 = {};
 
   @override
   State<CombatScreen> createState() => _CombatScreenState();
@@ -13,47 +14,76 @@ class CombatScreen extends StatefulWidget {
 class _CombatScreenState extends State<CombatScreen> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        // top part
-        Expanded(
-          flex: 2,
-          child: Container(
-            //color: Colors.amber,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage(
-                      "lib/assets/backgrounds/background-battle.png"),
-                  fit: BoxFit.fill),
-            ),
-            child: Row(
-              children: [
-                Column(
-                  children: [EnemyStatBar()],
-                ),
-                Column(
-                  children: [],
-                )
-              ],
+    return Scaffold(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // top part
+          Expanded(
+            flex: 2,
+            child: Container(
+              //color: Colors.amber,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage(
+                        "lib/assets/backgrounds/background-battle.png"),
+                    fit: BoxFit.fill),
+              ),
+              child: Stack(
+                alignment: AlignmentDirectional.topStart,
+                children: [
+                  const EnemyStatBar(),
+                  Positioned(
+                    top: 160,
+                    left: 115,
+                    child: SizedBox(
+                      height: 200,
+                      width: 200,
+                      child: Image.asset(
+                        "lib/assets/pokemon_front/${widget.pokemon2["id"]}.png",
+                        fit: BoxFit.fitWidth,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 280,
+                    left: -100,
+                    child: SizedBox(
+                      height: 300,
+                      width: 300,
+                      child: Image.asset(
+                        "lib/assets/pokemon_back/${widget.pokemon1["id"]}.png",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-        // ui
-        Expanded(
-            flex: 1,
-            child: Row(
-              children: [
-                Container(
-                  color: Colors.green,
-                  width: MediaQuery.of(context).size.width / 2,
-                ),
-                Container(
+          // ui
+          Expanded(
+              flex: 1,
+              child: Row(
+                children: [
+                  Container(
+                    color: Colors.green,
+                    width: MediaQuery.of(context).size.width / 2,
+                  ),
+                  Container(
                     color: Colors.purple,
-                    width: MediaQuery.of(context).size.width / 2)
-              ],
-            ))
-      ],
+                    width: MediaQuery.of(context).size.width / 2,
+                    child: OutlinedButton(
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(context, '/');
+                      },
+                      child: Text("run"),
+                    ),
+                  ),
+                ],
+              ))
+        ],
+      ),
     );
   }
 }

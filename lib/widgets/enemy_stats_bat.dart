@@ -4,12 +4,21 @@ import 'package:flutter/material.dart';
 
 import 'life_bar.dart';
 
-class EnemyStatBar extends StatelessWidget {
+class EnemyStatBar extends StatefulWidget {
   const EnemyStatBar({super.key});
+
+  @override
+  State<EnemyStatBar> createState() => _EnemyStatBarState();
+}
+
+class _EnemyStatBarState extends State<EnemyStatBar> {
+  String name = 'pikachu'; //TODO puxar dados de algum lugar.
+  int lvl = 23;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 50,
       color: Colors.white54,
       margin: EdgeInsets.only(top: 30, left: 0),
       child: Column(
@@ -21,8 +30,8 @@ class EnemyStatBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               // ignore: prefer_const_literals_to_create_immutables
               children: [
-                Text('pikachu'),
-                Text('lvl 23'),
+                Text(name),
+                Text('lvl $lvl'),
               ],
             ),
           ),
