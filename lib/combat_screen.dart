@@ -34,7 +34,11 @@ class _CombatScreenState extends State<CombatScreen> {
                 children: [
                   const EnemyStatBar(),
                   Positioned(
-                    top: 160,
+                    top: (200 -
+                            widget.pokemon2["height"] *
+                                widget.pokemon2["height"] /
+                                5)
+                        .toDouble(),
                     left: 115,
                     child: SizedBox(
                       height: 200,
@@ -46,7 +50,11 @@ class _CombatScreenState extends State<CombatScreen> {
                     ),
                   ),
                   Positioned(
-                    top: 280,
+                    top: (350 -
+                            widget.pokemon2["height"] *
+                                widget.pokemon2["height"] /
+                                5)
+                        .toDouble(),
                     left: -100,
                     child: SizedBox(
                       height: 300,
@@ -77,7 +85,7 @@ class _CombatScreenState extends State<CombatScreen> {
                       onPressed: () {
                         Navigator.pushReplacementNamed(context, '/');
                       },
-                      child: Text("run"),
+                      child: const Text("run"),
                     ),
                   ),
                 ],
