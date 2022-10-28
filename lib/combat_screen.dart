@@ -14,6 +14,12 @@ class CombatScreen extends StatefulWidget {
 class _CombatScreenState extends State<CombatScreen> {
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    var padding = MediaQuery.of(context).padding;
+    height = height - padding.top - padding.bottom;
+    height = (height / 3) * 2;
+
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -34,18 +40,18 @@ class _CombatScreenState extends State<CombatScreen> {
                 children: [
                   const EnemyStatBar(),
                   Positioned(
-                    top: (200 -
-                            widget.pokemon2["height"] *
-                                widget.pokemon2["height"] /
-                                5)
-                        .toDouble(),
-                    left: 115,
-                    child: SizedBox(
+                    top: height / 5,
+                    left: width / 2,
+                    child: Container(
+                      alignment: Alignment.bottomCenter,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.amber, width: 3)),
                       height: 200,
                       width: 200,
                       child: Image.asset(
                         "lib/assets/pokemon_front/${widget.pokemon2["id"]}.png",
-                        fit: BoxFit.fitWidth,
+                        scale: 0.3,
+                        fit: BoxFit.fill,
                       ),
                     ),
                   ),
