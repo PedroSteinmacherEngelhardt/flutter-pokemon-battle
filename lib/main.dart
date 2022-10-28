@@ -1,9 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/home_page.dart';
+import 'package:flutter_application_1/pokemon_provider.dart';
 import 'package:flutter_application_1/select_page.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => pokemon_provider(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pokemon_provider.dart';
 import 'package:flutter_application_1/widgets/enemy_stats_bat.dart';
+import 'package:flutter_application_1/widgets/stats_bar.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class CombatScreen extends StatefulWidget {
@@ -12,6 +15,13 @@ class CombatScreen extends StatefulWidget {
 }
 
 class _CombatScreenState extends State<CombatScreen> {
+  String mensagem = 'What will you do?';
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -38,14 +48,12 @@ class _CombatScreenState extends State<CombatScreen> {
               child: Stack(
                 alignment: AlignmentDirectional.topStart,
                 children: [
-                  const EnemyStatBar(),
+                  EnemyStatBar(pokemon2: widget.pokemon2),
                   Positioned(
-                    top: height / 5,
-                    left: width / 2,
+                    top: height / 5 + 40,
+                    left: width / 2 - 48,
                     child: Container(
                       alignment: Alignment.bottomCenter,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.amber, width: 3)),
                       height: 200,
                       width: 200,
                       child: Image.asset(
@@ -55,12 +63,9 @@ class _CombatScreenState extends State<CombatScreen> {
                       ),
                     ),
                   ),
+                  Positioned(bottom: 20,right: 1,child: StatBar(pokemon1: widget.pokemon1,)),
                   Positioned(
-                    top: (350 -
-                            widget.pokemon2["height"] *
-                                widget.pokemon2["height"] /
-                                5)
-                        .toDouble(),
+                    top: (300).toDouble(),
                     left: -100,
                     child: SizedBox(
                       height: 300,
@@ -77,25 +82,85 @@ class _CombatScreenState extends State<CombatScreen> {
           ),
           // ui
           Expanded(
-              flex: 1,
-              child: Row(
-                children: [
-                  Container(
-                    color: Colors.green,
-                    width: MediaQuery.of(context).size.width / 2,
-                  ),
-                  Container(
-                    color: Colors.purple,
-                    width: MediaQuery.of(context).size.width / 2,
-                    child: OutlinedButton(
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(context, '/');
-                      },
-                      child: const Text("run"),
+            flex: 1,
+            child: Container(
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 175, 175, 175),
+                border: Border.all(
+                  color: const Color.fromARGB(255, 27, 27, 27),
+                  width: 10,
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white),
+                      width: MediaQuery.of(context).size.width / 2 - 18,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            mensagem,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ))
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 2 - 18,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color.fromARGB(
+                                        255, 228, 113, 105)),
+                                onPressed: () {
+                                  Provider.of<pokemon_provider>(context,listen: false).damage_enemy(0.2);
+                                },
+                                child: const SizedBox(
+                                  width: 50,
+                                  child: Text(
+                                    'Attack',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 77, 140, 212),
+                                ),
+                                onPressed: () {
+                                  Provider.of<pokemon_provider>(context,listen: false).setEnemyHp(1);
+                                  Provider.of<pokemon_provider>(context,listen: false).setHp(1);
+                                  Navigator.pushReplacementNamed(context, '/');
+                                },
+                                child: const SizedBox(
+                                  width: 50,
+                                  child: Text(
+                                    'Run',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );
