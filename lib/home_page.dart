@@ -35,76 +35,89 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () async {
-                  pokemon1 = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SelectPage()),
-                      ) ??
-                      random;
-                  setState(() {
-                    pokemon1;
-                  });
-                },
-                child: Card(
-                  child: Column(
-                    children: [
-                      Image.asset(
-                          "lib/assets/pokemon_front/${pokemon1["id"]}.png"),
-                      Text(pokemon1["name"].toString()),
-                    ],
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("lib/assets/backgrounds/home1.jpg"),
+              fit: BoxFit.cover),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    pokemon1 = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SelectPage()),
+                        ) ??
+                        random;
+                    setState(() {
+                      pokemon1;
+                    });
+                  },
+                  child: Card(
+                    child: Column(
+                      children: [
+                        Image.asset(
+                            "lib/assets/pokemon_front/${pokemon1["id"]}.png"),
+                        Text(pokemon1["name"].toString()),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              GestureDetector(
-                onTap: () async {
-                  pokemon2 = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SelectPage()),
-                      ) ??
-                      random;
-                  setState(() {
-                    pokemon2;
-                  });
-                },
-                child: Card(
-                  child: Column(
-                    children: [
-                      Image.asset(
-                          "lib/assets/pokemon_front/${pokemon2["id"]}.png"),
-                      Text(pokemon2["name"].toString()),
-                    ],
+                GestureDetector(
+                  onTap: () async {
+                    pokemon2 = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SelectPage()),
+                        ) ??
+                        random;
+                    setState(() {
+                      pokemon2;
+                    });
+                  },
+                  child: Card(
+                    child: Column(
+                      children: [
+                        Image.asset(
+                            "lib/assets/pokemon_front/${pokemon2["id"]}.png"),
+                        Text(pokemon2["name"].toString()),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          OutlinedButton(
-            onPressed: () {
-              pokemon1 =
-                  pokemon1["id"] == 0 ? data[Random().nextInt(152)] : pokemon1;
-              pokemon2 =
-                  pokemon2["id"] == 0 ? data[Random().nextInt(152)] : pokemon2;
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              onPressed: () {
+                pokemon1 = pokemon1["id"] == 0
+                    ? data[Random().nextInt(152)]
+                    : pokemon1;
+                pokemon2 = pokemon2["id"] == 0
+                    ? data[Random().nextInt(152)]
+                    : pokemon2;
 
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        CombatScreen(pokemon1: pokemon1, pokemon2: pokemon2)),
-              );
-            },
-            child: const Text("battle"),
-          )
-        ],
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          CombatScreen(pokemon1: pokemon1, pokemon2: pokemon2)),
+                );
+              },
+              child: const Text("battle"),
+            )
+          ],
+        ),
       ),
     );
   }

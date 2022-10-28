@@ -57,15 +57,23 @@ class _CombatScreenState extends State<CombatScreen> {
                       height: 200,
                       width: 200,
                       child: Image.asset(
-                        "lib/assets/pokemon_front/${widget.pokemon2["id"]}.png",
+                        !Provider.of<pokemon_provider>(context).fim
+                            ? "lib/assets/pokemon_front/${widget.pokemon2["id"]}.png"
+                            : "lib/assets/backgrounds/tumba.png",
+                        filterQuality: FilterQuality.none,
                         scale: 0.3,
                         fit: BoxFit.fill,
                       ),
                     ),
                   ),
-                  Positioned(bottom: 20,right: 1,child: StatBar(pokemon1: widget.pokemon1,)),
                   Positioned(
-                    top: (300).toDouble(),
+                      bottom: 20,
+                      right: 1,
+                      child: StatBar(
+                        pokemon1: widget.pokemon1,
+                      )),
+                  Positioned(
+                    top: 280,
                     left: -100,
                     child: SizedBox(
                       height: 300,
@@ -73,6 +81,7 @@ class _CombatScreenState extends State<CombatScreen> {
                       child: Image.asset(
                         "lib/assets/pokemon_back/${widget.pokemon1["id"]}.png",
                         fit: BoxFit.cover,
+                        filterQuality: FilterQuality.none,
                       ),
                     ),
                   )
@@ -85,7 +94,19 @@ class _CombatScreenState extends State<CombatScreen> {
             flex: 1,
             child: Container(
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 175, 175, 175),
+                gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [
+                      0.1,
+                      0.5,
+                      0.9,
+                    ],
+                    colors: [
+                      Color.fromARGB(255, 141, 139, 139),
+                      Colors.white,
+                      Color.fromARGB(255, 116, 113, 113)
+                    ]),
                 border: Border.all(
                   color: const Color.fromARGB(255, 27, 27, 27),
                   width: 10,
@@ -97,17 +118,30 @@ class _CombatScreenState extends State<CombatScreen> {
                   children: [
                     Container(
                       decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Color.fromARGB(255, 46, 46, 46), width: 5),
                           borderRadius: BorderRadius.circular(10),
-                          color: Colors.white),
+                          color: Colors.amber),
                       width: MediaQuery.of(context).size.width / 2 - 18,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            mensagem,
-                            textAlign: TextAlign.center,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          color: Colors.white,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                Provider.of<pokemon_provider>(context).fim
+                                    ? 'Você venceu!'
+                                    : Provider.of<pokemon_provider>(context)
+                                            .lock
+                                        ? '${widget.pokemon2['name']} is attacking!'
+                                        : mensagem,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -120,10 +154,21 @@ class _CombatScreenState extends State<CombatScreen> {
                             children: [
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color.fromARGB(
-                                        255, 228, 113, 105)),
+                                    backgroundColor:
+                                        !Provider.of<pokemon_provider>(context,
+                                                    listen: false)
+                                                .lock
+                                            ? const Color.fromARGB(
+                                                255, 228, 113, 105)
+                                            : Colors.black),
                                 onPressed: () {
-                                  Provider.of<pokemon_provider>(context,listen: false).damage_enemy(0.2);
+                                  if (!Provider.of<pokemon_provider>(context,
+                                          listen: false)
+                                      .lock) {
+                                    Provider.of<pokemon_provider>(context,
+                                            listen: false)
+                                        .damage_enemy(0.2);
+                                  }
                                 },
                                 child: const SizedBox(
                                   width: 50,
@@ -139,8 +184,12 @@ class _CombatScreenState extends State<CombatScreen> {
                                       const Color.fromARGB(255, 77, 140, 212),
                                 ),
                                 onPressed: () {
-                                  Provider.of<pokemon_provider>(context,listen: false).setEnemyHp(1);
-                                  Provider.of<pokemon_provider>(context,listen: false).setHp(1);
+                                  Provider.of<pokemon_provider>(context,
+                                          listen: false)
+                                      .setEnemyHp(1);
+                                  Provider.of<pokemon_provider>(context,
+                                          listen: false)
+                                      .setHp(1);
                                   Navigator.pushReplacementNamed(context, '/');
                                 },
                                 child: const SizedBox(
